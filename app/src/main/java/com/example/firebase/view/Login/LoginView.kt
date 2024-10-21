@@ -20,9 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import com.example.firebase.ViewModel.LoginViewModel
+import com.example.firebase.componet.Alert
 
 @Composable
-fun LoginView(){
+fun LoginView(navController: NavController,loginViewModel: LoginViewModel){
     Column(horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .fillMaxSize()
@@ -46,12 +49,20 @@ fun LoginView(){
             modifier = Modifier.fillMaxWidth().padding(start = 30.dp, end = 30.dp)
         )
         Spacer(modifier = Modifier.height(20.dp))
-        Button(onClick = {},
+        Button(onClick = {loginViewModel.login(email=email,password=password){
+            navController.navigate("home")
+        } },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 30.dp, end = 30.dp)
         ) {
             Text("Login")
+        }
+        if(loginViewModel.showAlert){
+            Alert(title = "alerta",
+                message = "usuario o contraseña incorrecto",
+                confirm = "aceptar",
+                onConfirm = {loginViewModel.closeAlert()}) { }
         }
     }
 }
